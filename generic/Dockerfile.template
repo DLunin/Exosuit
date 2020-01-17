@@ -1,21 +1,19 @@
-FROM {{#gpu}}nvidia/cuda:10.2-devel-ubuntu18.04{{/gpu}}{{^gpu}}ubuntu:18.04{{/gpu}}
+FROM {{#gpu}}nvidia/cuda:10.1-devel-ubuntu18.04{{/gpu}}{{^gpu}}ubuntu:18.04{{/gpu}}
 
 RUN apt-get update && TERM=xterm DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
 RUN apt-get update && apt-get install -y{{#apt_get_deps}} \
 	{{{package}}}{{/apt_get_deps}}
 
-# Installing prerequisites for Python 3.8
-
 # Enabling source repositories (for build-dep).
 RUN sed -i '/deb-src/s/^# //' /etc/apt/sources.list && apt-get update
-RUN apt-get update && apt-get build-dep -y python3.8 
+RUN apt-get update && apt-get build-dep -y python3.7
 
-# Installing Python 3.8 from source
+# Installing Python 3.7 from source
 RUN mkdir -p /opt/python3 && \
 	git clone https://github.com/python/cpython.git /opt/python3 && \
 	cd /opt/python3 && \
-	git reset --hard fa919fdf2583bdfead1df00e842f24f30b2a34bf && \
+	git reset --hard 43364a7ae01fbe4288ef42622259a0038ce1edcc && \
 	./configure && \
 	make && \
 	make install && \
@@ -65,7 +63,6 @@ ARG PROJECT_PATH
 # Installing Python libraries
 RUN pip3 install {{#python_deps}} \
 	{{{package}}}=={{{version}}}{{/python_deps}}
-RUN ln -s $PROJECT_PATH /usr/local/lib/python3.8/site-packages/exosuit
 
 {{#stage_main}}
 RUN echo "#!/bin/bash\n/usr/bin/env python3 $(which scons)" > /usr/bin/scons3

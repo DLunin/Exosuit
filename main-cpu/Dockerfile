@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-devel-ubuntu18.04
+FROM ubuntu:18.04
 
 RUN apt-get update && TERM=xterm DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
@@ -11,7 +11,10 @@ RUN apt-get update && apt-get install -y \
 	g++ \
 	sed \
 	curl \
-	sudo
+	sudo \
+	vim \
+	jupyter \
+	tmux
 
 # Enabling source repositories (for build-dep).
 RUN sed -i '/deb-src/s/^# //' /etc/apt/sources.list && apt-get update
@@ -40,10 +43,6 @@ RUN apt-get update && apt-get install -y \
 	docker-ce-cli \
 	containerd.io
 
-RUN curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-RUN curl -s -L https://nvidia.github.io/nvidia-docker/$(. /etc/os-release;echo $ID$VERSION_ID)/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-RUN apt-get update && apt-get install -y nvidia-container-toolkit
-
 ARG PROJECT_PATH
 
 # Installing Python libraries
@@ -53,5 +52,24 @@ RUN pip3 install  \
 	pystache==0.5.4 \
 	pyyaml==5.3 \
 	docker==4.1.0 \
-	click==7.0
+	click==7.0 \
+	wheel==0.33.6 \
+	ninja==1.9.0.post1 \
+	mkl==2019.0 \
+	astor==0.8.1 \
+	uncompyle6==3.6.0 \
+	anytree==2.7.3 \
+	antlr4-python3-runtime==4.7.2 \
+	networkx==2.4 \
+	pytest==5.3.2 \
+	numpy==1.17.4 \
+	scipy==1.3.3 \
+	matplotlib==3.1.1 \
+	pandas==0.25.3 \
+	scons==3.1.2 \
+	setuptools==42.0.2 \
+	pytorch==1.0.2 \
+	torchvision==0.5.0 \
+	tensorflow==2.1.0 \
+	ipython==7.11.1
 

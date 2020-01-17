@@ -89,6 +89,22 @@ python:
         version: 42.0.2 
         stages: 
             - main
+    torch:
+        version: 1.4.0
+        stages:
+            - main
+    torchvision:
+        version: 0.5.0
+        stages: 
+            - main
+    tensorflow:
+        version: 2.1.0
+        stages:
+            - main
+    ipython:
+        version: 7.11.1
+        stages:
+            - main
 
 apt:
     bash:

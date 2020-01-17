@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-devel-ubuntu18.04
+FROM ubuntu:18.04
 
 RUN apt-get update && TERM=xterm DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
@@ -39,10 +39,6 @@ RUN apt-get update && apt-get install -y \
 	docker-ce \
 	docker-ce-cli \
 	containerd.io
-
-RUN curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-RUN curl -s -L https://nvidia.github.io/nvidia-docker/$(. /etc/os-release;echo $ID$VERSION_ID)/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-RUN apt-get update && apt-get install -y nvidia-container-toolkit
 
 ARG PROJECT_PATH
 

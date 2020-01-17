@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.2-devel-ubuntu18.04
+FROM nvidia/cuda:10.1-devel-ubuntu18.04
 
 RUN apt-get update && TERM=xterm DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
@@ -16,17 +16,15 @@ RUN apt-get update && apt-get install -y \
 	jupyter \
 	tmux
 
-# Installing prerequisites for Python 3.8
-
 # Enabling source repositories (for build-dep).
 RUN sed -i '/deb-src/s/^# //' /etc/apt/sources.list && apt-get update
-RUN apt-get update && apt-get build-dep -y python3.8 
+RUN apt-get update && apt-get build-dep -y python3.7
 
-# Installing Python 3.8 from source
+# Installing Python 3.7 from source
 RUN mkdir -p /opt/python3 && \
 	git clone https://github.com/python/cpython.git /opt/python3 && \
 	cd /opt/python3 && \
-	git reset --hard fa919fdf2583bdfead1df00e842f24f30b2a34bf && \
+	git reset --hard 43364a7ae01fbe4288ef42622259a0038ce1edcc && \
 	./configure && \
 	make && \
 	make install && \
@@ -44,6 +42,10 @@ RUN apt-get update && apt-get install -y \
 	docker-ce \
 	docker-ce-cli \
 	containerd.io
+
+RUN curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+RUN curl -s -L https://nvidia.github.io/nvidia-docker/$(. /etc/os-release;echo $ID$VERSION_ID)/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+RUN apt-get update && apt-get install -y nvidia-container-toolkit
 
 ARG PROJECT_PATH
 
@@ -69,6 +71,9 @@ RUN pip3 install  \
 	matplotlib==3.1.1 \
 	pandas==0.25.3 \
 	scons==3.1.2 \
-	setuptools==42.0.2
-RUN ln -s $PROJECT_PATH /usr/local/lib/python3.8/site-packages/exosuit
+	setuptools==42.0.2 \
+	torch==1.4.0 \
+	torchvision==0.5.0 \
+	tensorflow==2.1.0 \
+	ipython==7.11.1
 

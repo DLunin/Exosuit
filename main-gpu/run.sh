@@ -35,6 +35,7 @@ sudo docker run --rm -it -v $HOME:$HOME \
 	-v /var/run/docker.sock:/var/run/docker.sock \
 	-u $USER_ID:$USER_ID \
 	--net=host \
+	--gpus all \
 	exosuit-main-gpu /bin/bash
 
 popd

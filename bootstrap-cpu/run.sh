@@ -11,11 +11,11 @@ NO_COLOR='\033[0m'
 
 pushd $SCRIPT_DIR
 
-echo -e "${COLOR}Building the Exosuit bootstrap-gpu container${NO_COLOR}"
+echo -e "${COLOR}Building the Exosuit bootstrap-cpu container${NO_COLOR}"
 
 sudo docker build \
 	--build-arg PROJECT_PATH=$PROJECT_DIR \
-	. -t exosuit-bootstrap-gpu
+	. -t exosuit-bootstrap-cpu
 
 if [ $? -eq 0 ]; then
     echo -e "${COLOR}Build successful${NO_COLOR}"
@@ -24,7 +24,7 @@ else
 	exit 1
 fi
 
-echo -e "${COLOR}Launching the Exosuit bootstrap-gpu container as user '$USER_NAME'${NO_COLOR}"
+echo -e "${COLOR}Launching the Exosuit bootstrap-cpu container as user '$USER_NAME'${NO_COLOR}"
 
 sudo docker run --rm -it -v $HOME:$HOME \
 	-v $PROJECT_DIR:$PROJECT_DIR \
@@ -35,7 +35,7 @@ sudo docker run --rm -it -v $HOME:$HOME \
 	-v /var/run/docker.sock:/var/run/docker.sock \
 	-u $USER_ID:$USER_ID \
 	--net=host \
-	--gpus all \
-	exosuit-bootstrap-gpu python3 /home/wrwt/Programming/Exosuit/generic/run.py --gpu --stage=main
+	 \
+	exosuit-bootstrap-cpu python3 /home/wrwt/Programming/Exosuit/generic/run.py --cpu --stage=main
 
 popd

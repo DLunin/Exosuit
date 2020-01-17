@@ -26,7 +26,7 @@ def ensure_path(path):
 @click.command()
 @click.option('--gpu/--cpu', default=True, help='Enable or disable GPU support and things that rely on it')
 @click.option('--stage', type=click.Choice(['bootstrap', 'main'], case_sensitive=False), default='bootstrap', help='Target stage')
-@click.option('--generate-only', default=False, help='Do not build launch the container, just generate the Dockerfile and the launcher script')
+@click.option('--generate-only', is_flag=True, default=False, help='Do not build launch the container, just generate the Dockerfile and the launcher script')
 def run(gpu, stage, generate_only):
     script_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
     script_path = os.path.realpath(sys.argv[0])
