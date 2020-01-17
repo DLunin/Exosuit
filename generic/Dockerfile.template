@@ -34,6 +34,12 @@ RUN apt-get update && apt-get install -y \
 	docker-ce-cli \
 	containerd.io
 
+{{#gpu}}
+RUN curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+RUN curl -s -L https://nvidia.github.io/nvidia-docker/$(. /etc/os-release;echo $ID$VERSION_ID)/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+RUN apt-get update && apt-get install -y nvidia-container-toolkit
+{{/gpu}}
+
 {{#stage_main}}
 # Installing OpenJDK 13.0.1	
 RUN cd /tmp && \

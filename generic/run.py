@@ -39,7 +39,7 @@ def run(gpu, stage, generate_only):
     with open(os.path.join(script_dir, 'requirements.yaml'), 'r') as f:
         requirements = yaml.load(f.read(), Loader=yaml.SafeLoader)
 
-    gpu_str = 'gpu' if gpu else 'cpi'
+    gpu_str = 'gpu' if gpu else 'cpu'
     container_name = f'{stage}-{gpu_str}'
     image_tag = f'exosuit-{stage}-{gpu_str}'
     target_dir = os.path.join(exosuit_dir, container_name)
@@ -80,6 +80,7 @@ def run(gpu, stage, generate_only):
         'container_name': container_name,
         'image_tag': image_tag,
         'command': container_command,
+        'gpus': '--gpus all' if gpu else '',
     }
 
     with open(os.path.join(script_dir, 'run.template'), 'r') as f:
