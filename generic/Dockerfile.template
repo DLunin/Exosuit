@@ -1,4 +1,4 @@
-FROM {{#gpu}}nvidia/cuda:10.1-devel-ubuntu18.04{{/gpu}}{{^gpu}}ubuntu:18.04{{/gpu}}
+FROM {{#gpu}}nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04{{/gpu}}{{^gpu}}ubuntu:18.04{{/gpu}}
 
 RUN apt-get update && TERM=xterm DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
