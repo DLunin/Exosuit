@@ -1,0 +1,138 @@
+python: 
+    colorama:
+        version: 0.4.3
+        stages:
+            - bootstrap
+            - main
+    sh:
+        version: 1.12.14
+        stages:
+            - bootstrap
+            - main
+    pystache:
+        version: 0.5.4
+        stages:
+            - bootstrap
+            - main
+    pyyaml: 
+        version: 5.3
+        stages:
+            - bootstrap 
+            - main
+    docker:
+        version: 4.1.0
+        stages:
+            - bootstrap
+            - main
+    click:
+        version: 7.0
+        stages:
+            - bootstrap
+            - main
+    wheel: 
+        version: 0.33.6
+        stages:
+            - main
+    ninja: 
+        version: 1.9.0.post1
+        stages:
+            - main
+    mkl: 
+        version: 2019.0
+        stages:
+            - main
+    astor: 
+        version: 0.8.1
+        stages:
+            - main
+    uncompyle6: 
+        version: 3.6.0
+        stages:
+            - main
+    anytree:
+        version: 2.7.3
+        stages:
+            - main
+    antlr4-python3-runtime: 
+        version: 4.7.2
+        stages:
+            - main
+    networkx: 
+        version: 2.4
+        stages:
+            - main
+    pytest: 
+        version: 5.3.2
+        stages:
+            - main
+    numpy: 
+        version: 1.17.4
+        stages:
+            - main
+    scipy: 
+        version: 1.3.3
+        stages:
+            - main
+    matplotlib: 
+        version: 3.1.1
+        stages:
+            - main
+    pandas: 
+        version: 0.25.3
+        stages:
+            - main
+    scons: 
+        version: 3.1.2
+        stages:
+            - main
+    setuptools: 
+        version: 42.0.2 
+        stages: 
+            - main
+
+apt:
+    bash:
+        stages:
+            - bootstrap
+            - main
+    build-essential:
+        stages: 
+            - bootstrap
+            - main
+    software-properties-common:
+        stages:
+            - bootstrap
+            - main
+    make:
+        stages:
+            - bootstrap
+            - main
+    git:
+        stages:
+            - bootstrap
+            - main
+    g++:
+        stages:
+            - bootstrap
+            - main
+    sed:
+        stages:
+            - bootstrap
+            - main
+    curl:
+        stages:
+            - bootstrap
+            - main
+    sudo:
+        stages:
+            - bootstrap
+            - main
+    vim: 
+        stages:
+            - main
+    jupyter:
+        stages:
+            - main
+    tmux: 
+        stages:
+            - main

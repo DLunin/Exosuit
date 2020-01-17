@@ -1,0 +1,67 @@
+FROM {{#gpu}}nvidia/cuda:10.2-devel-ubuntu18.04{{/gpu}}{{^gpu}}ubuntu:18.04{{/gpu}}
+
+RUN apt-get update && TERM=xterm DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+
+RUN apt-get update && apt-get install -y{{#apt_get_deps}} \
+	{{{package}}}{{/apt_get_deps}}
+
+# Installing prerequisites for Python 3.8
+
+# Enabling source repositories (for build-dep).
+RUN sed -i '/deb-src/s/^# //' /etc/apt/sources.list && apt-get update
+RUN apt-get update && apt-get build-dep -y python3.8 
+
+# Installing Python 3.8 from source
+RUN mkdir -p /opt/python3 && \
+	git clone https://github.com/python/cpython.git /opt/python3 && \
+	cd /opt/python3 && \
+	git reset --hard fa919fdf2583bdfead1df00e842f24f30b2a34bf && \
+	./configure && \
+	make && \
+	make install && \
+	cd /
+
+RUN pip3 install --upgrade pip
+
+# Installing Docker
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+RUN apt-get update && apt-get install -y \
+	docker-ce \
+	docker-ce-cli \
+	containerd.io
+
+{{#stage_main}}
+# Installing OpenJDK 13.0.1	
+RUN cd /tmp && \
+	curl https://download.java.net/java/GA/jdk13.0.1/cec27d702aa74d5a8630c65ae61e4305/9/GPL/openjdk-13.0.1_linux-x64_bin.tar.gz -o /tmp/openjdk.tar.gz && \
+	sha256sum openjdk.tar.gz && \
+	test "$(sha256sum openjdk.tar.gz)" = "2e01716546395694d3fad54c9b36d1cd46c5894c06f72d156772efbcf4b41335  openjdk.tar.gz" && \
+	tar -xvf openjdk.tar.gz -C /opt && \
+	ln -s /opt/jdk-13.0.1/bin/* /usr/bin/
+{{/stage_main}}
+
+{{#stage_main}}
+# Installing ANTLR
+RUN curl https://www.antlr.org/download/antlr-4.7.2-complete.jar > /usr/local/lib/antlr-4.7.2-complete.jar
+ENV CLASSPATH=".:/usr/local/lib/antlr-4.7.2-complete.jar:$CLASSPATH"
+RUN echo '#!/bin/bash\njava -Xmx500M -cp "/usr/local/lib/antlr-4.7.2-complete.jar:$CLASSPATH" org.antlr.v4.Tool' > /usr/bin/antlr4 && \
+	chmod +x /usr/bin/antlr4
+RUN echo '#!/bin/bash\njava -Xmx500M -cp "/usr/local/lib/antlr-4.7.2-complete.jar:$CLASSPATH" org.antlr.v4.gui.TestRig' > /usr/bin/grun && \
+	chmod +x /usr/bin/grun
+{{/stage_main}}
+
+ARG PROJECT_PATH
+
+# Installing Python libraries
+RUN pip3 install {{#python_deps}} \
+	{{{package}}}=={{{version}}}{{/python_deps}}
+RUN ln -s $PROJECT_PATH /usr/local/lib/python3.8/site-packages/exosuit
+
+{{#stage_main}}
+RUN echo "#!/bin/bash\n/usr/bin/env python3 $(which scons)" > /usr/bin/scons3
+RUN chmod +x /usr/bin/scons3
+{{/stage_main}}
