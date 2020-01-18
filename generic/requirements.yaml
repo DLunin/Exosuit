@@ -105,7 +105,10 @@ python:
         version: 7.11.1
         stages:
             - main
-
+    jupyter:
+        version: 1.0.0
+        stages:
+            - main
 apt:
     bash:
         stages:
@@ -144,9 +147,6 @@ apt:
             - bootstrap
             - main
     vim: 
-        stages:
-            - main
-    jupyter:
         stages:
             - main
     tmux: 
