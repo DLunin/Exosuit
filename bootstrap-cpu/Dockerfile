@@ -43,11 +43,12 @@ RUN apt-get update && apt-get install -y \
 ARG PROJECT_PATH
 
 # Installing Python libraries
-RUN pip3 install  \
-	colorama==0.4.3 \
-	sh==1.12.14 \
-	pystache==0.5.4 \
-	pyyaml==5.3 \
-	docker==4.1.0 \
-	click==7.0
+RUN pip3 install colorama==0.4.3
+RUN pip3 install sh==1.12.14
+RUN pip3 install pystache==0.5.4
+RUN pip3 install pyyaml==5.3
+RUN pip3 install docker==4.1.0
+RUN pip3 install click==7.0
+RUN pip3 install torch==1.4.0
+RUN pip3 install tensorflow==2.1.0
 

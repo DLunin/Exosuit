@@ -61,8 +61,8 @@ RUN echo '#!/bin/bash\njava -Xmx500M -cp "/usr/local/lib/antlr-4.7.2-complete.ja
 ARG PROJECT_PATH
 
 # Installing Python libraries
-RUN pip3 install {{#python_deps}} \
-	{{{package}}}=={{{version}}}{{/python_deps}}
+{{#python_deps}}RUN pip3 install {{{package}}}=={{{version}}}
+{{/python_deps}}
 
 {{#stage_main}}
 RUN echo "#!/bin/bash\n/usr/bin/env python3 $(which scons)" > /usr/bin/scons3

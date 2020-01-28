@@ -29,6 +29,11 @@ python:
         stages:
             - bootstrap
             - main
+    torch:
+        version: 1.4.0
+        stages:
+            - bootstrap
+            - main
     wheel: 
         version: 0.33.6
         stages:
@@ -89,10 +94,6 @@ python:
         version: 42.0.2 
         stages: 
             - main
-    torch:
-        version: 1.4.0
-        stages:
-            - main
     torchvision:
         version: 0.5.0
         stages: 
@@ -100,6 +101,7 @@ python:
     tensorflow:
         version: 2.1.0
         stages:
+            - bootstrap
             - main
     ipython:
         version: 7.11.1
@@ -107,6 +109,14 @@ python:
             - main
     jupyter:
         version: 1.0.0
+        stages:
+            - main
+    python-telegram-bot:
+        version: 12.3.0
+        stages: 
+            - main
+    GPUtil:
+        version: 1.4.0
         stages:
             - main
 apt:

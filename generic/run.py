@@ -24,7 +24,7 @@ def ensure_path(path):
 
 
 @click.command()
-@click.option('--gpu/--cpu', default=True, help='Enable or disable GPU support and things that rely on it')
+@click.option('--gpu/--cpu', default=None, help='Enable or disable GPU support and things that rely on it')
 @click.option('--stage', type=click.Choice(['bootstrap', 'main'], case_sensitive=False), default='bootstrap', help='Target stage')
 @click.option('--generate-only', is_flag=True, default=False, help='Do not build launch the container, just generate the Dockerfile and the launcher script')
 def run(gpu, stage, generate_only):
@@ -32,6 +32,13 @@ def run(gpu, stage, generate_only):
     script_path = os.path.realpath(sys.argv[0])
     exosuit_dir = os.path.abspath(os.path.expanduser(os.path.join(script_dir, '../')))
     home_dir = os.path.expanduser('~')
+
+    if gpu is None:
+        if stage == 'main':
+            import torch
+            gpu = torch.cuda.is_available()
+        else:
+            gpu = False
 
     userid = int(subprocess.run('id -u ${USER}', shell=True, stdout=subprocess.PIPE).stdout)
     username = subprocess.run('getent group "$(id -g ${USER})" | cut -d: -f1', shell=True, stdout=subprocess.PIPE).stdout.decode('utf-8')[:-1]

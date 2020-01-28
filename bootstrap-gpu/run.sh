@@ -33,9 +33,11 @@ sudo docker run --rm -it -v $HOME:$HOME \
 	-v "/etc/passwd:/etc/passwd:ro" \
 	-v "/etc/shadow:/etc/shadow:ro" \
 	-v /var/run/docker.sock:/var/run/docker.sock \
+	-v /mnt:/mnt \
+	-v /media:/media \
 	-u $USER_ID:$USER_ID \
 	--net=host \
 	--gpus all \
-	exosuit-bootstrap-gpu python3 /home/wrwt/Programming/Exosuit/generic/run.py --gpu --stage=main
+	exosuit-bootstrap-gpu python3 /home/wrwt/Programming/Hyperborea/Exosuit/generic/run.py --gpu --stage=main
 
 popd
